@@ -10,7 +10,3 @@ let server;
     console.error(error);
   }
 })();
-
-setTimeout(()=>{
-    console.log("Server started on port 3000");
-},1000)
