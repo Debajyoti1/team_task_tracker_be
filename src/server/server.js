@@ -1,5 +1,5 @@
 const http = require("http");
-const { app } = require("./app");
+const app = require("./app");
 
 async function startServer() {
   //DB init
@@ -11,4 +11,4 @@ async function startServer() {
   return server;
 }
 
-exports.startServer = startServer;
+module.exports = {startServer};
