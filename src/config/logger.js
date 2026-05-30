@@ -1,11 +1,12 @@
 const { createLogger, format, transports } = require("winston");
+const config = require("./env");
 
 const logger = createLogger({
-  level: process.env.NODE_ENV === "production" ? "info" : "debug",
+  level: config.app.logLevel,
   format: format.combine(
     format.timestamp(),
     format.errors({ stack: true }),
-    format.json() // structured JSON format
+    format.json()
   ),
   transports: [new transports.Console()],
 });

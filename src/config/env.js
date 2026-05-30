@@ -7,6 +7,7 @@ const envSchema = z.object({
   PORT: z.coerce.number().default(5000),
   NODE_ENV: z.enum(["dev", "test", "stage", "prod"]).default("dev"),
   APP_NAME: z.string().default("app"),
+  LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).default("info"),
 
   // Database
   DB_HOST: z.string().default("127.0.0.1"),
@@ -38,6 +39,7 @@ const config = {
     port: env.PORT,
     env: env.NODE_ENV,
     name: env.APP_NAME,
+    logLevel: env.logLevel
   },
 
   db: {
