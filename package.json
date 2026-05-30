@@ -6,13 +6,20 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/index.js",
-    "dev": "npx nodemon src/index.js"
+    "dev": "npx nodemon src/index.js",
+
+    "migration:create": "mikro-orm migration:create",
+    "migration:up": "mikro-orm migration:up",
+    "migration:down": "mikro-orm migration:down",
   },
   "keywords": [],
   "author": "Debajyoti Dutta",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@mikro-orm/core": "^7.1.2",
+    "@mikro-orm/migrations": "^7.1.2",
+    "@mikro-orm/postgresql": "^7.1.2",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
@@ -20,12 +27,14 @@
     "express": "^5.2.1",
     "helmet": "^8.2.0",
     "jsonwebtoken": "^9.0.3",
+    "pg": "^8.21.0",
     "redis": "^6.0.0",
     "uid": "^2.0.2",
     "winston": "^3.19.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@mikro-orm/cli": "^7.1.2",
     "nodemon": "^3.1.14"
   }
 }
