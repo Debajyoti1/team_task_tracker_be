@@ -1,12 +1,11 @@
 const { defineEntity, p } = require("@mikro-orm/core");
-const BaseEntity = require("./BaseEntity");
 
-const { TaskStatus, TaskPriority } = require("../utils/constants");
+const { TASK_STATUS, TASK_PRIORITY } = require("../utils/constants");
+
+const BaseEntityProps = require("./BaseEntity");
 
 const Task = defineEntity({
   name: "Task",
-
-  extends: BaseEntity,
 
   tableName: "tasks",
 
@@ -23,6 +22,7 @@ const Task = defineEntity({
   ],
 
   properties: {
+    ...BaseEntityProps,
     title: p.string(),
 
     description: p.text({
@@ -30,25 +30,27 @@ const Task = defineEntity({
     }),
 
     priority: p.enum({
-      items: Object.values(TaskPriority),
+      items: Object.values(TASK_PRIORITY),
     }),
 
     status: p.enum({
-      items: Object.values(TaskStatus),
+      items: Object.values(TASK_STATUS),
 
-      default: "TODO",
+      default: TASK_STATUS.TODO,
     }),
 
     dueDate: p.datetime({
       nullable: true,
     }),
 
-    project: () => p.manyToOne("Project"),
+    project: () => p.manyToOne("Project").inversedBy("tasks"),
 
-    assignee: () => p.manyToOne("User"),
+    assignee: () => p.manyToOne("User").inversedBy("assignedTasks"),
 
-    createdBy: () => p.manyToOne("User"),
+    createdBy: () => p.manyToOne("User").inversedBy("createdTasks"),
   },
 });
+
+
 
 module.exports = Task;

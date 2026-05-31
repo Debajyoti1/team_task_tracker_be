@@ -17,4 +17,13 @@ const BaseEntity = defineEntity({
   },
 });
 
-module.exports = BaseEntity;
+const BaseEntityProps = {
+  id: p.uuid().primary(),
+  createdAt: p.datetime({ defaultRaw: "now()" }),
+  updatedAt: p.datetime({
+    defaultRaw: "now()",
+    onUpdate: () => new Date(),
+  }),
+};
+
+module.exports = BaseEntityProps;

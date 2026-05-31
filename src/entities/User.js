@@ -1,11 +1,9 @@
 const { defineEntity, p } = require("@mikro-orm/core");
-const BaseEntity = require("./BaseEntity");
-const { UserRoles } = require("../utils/constants");
+const { USER_ROLES } = require("../utils/constants");
+const BaseEntityProps = require("./BaseEntity");
 
 const User = defineEntity({
   name: "User",
-
-  extends: BaseEntity,
 
   tableName: "users",
 
@@ -16,6 +14,7 @@ const User = defineEntity({
   ],
 
   properties: {
+    ...BaseEntityProps,
     email: p.string({
       unique: true,
     }),
@@ -27,14 +26,17 @@ const User = defineEntity({
     lastName: p.string(),
 
     role: p.enum({
-      items: Object.values(),
+      items: Object.values(USER_ROLES),
     }),
 
     isActive: p.boolean({
       default: true,
     }),
 
-    organization: () => p.manyToOne("Organization"),
+    organization: () => p.manyToOne("Organization").inversedBy("users"),
+    projects: () => p.oneToMany("Project").mappedBy("createdBy"),
+    assignedTasks: () => p.oneToMany("Task").mappedBy("assignee"),
+    createdTasks: () => p.oneToMany("Task").mappedBy("createdBy"),
   },
 });
 

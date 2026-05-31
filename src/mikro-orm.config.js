@@ -1,7 +1,12 @@
 const path = require("path");
 const { PostgreSqlDriver } = require("@mikro-orm/postgresql");
 const { UnderscoreNamingStrategy } = require("@mikro-orm/core");
-const config = require("./env");
+const config = require("./config/env");
+
+const User = require("./entities/User");
+const Organization = require("./entities/Organization");
+const Project = require("./entities/Project");
+const Task = require("./entities/Task");
 
 module.exports = {
   driver: PostgreSqlDriver,
@@ -13,9 +18,7 @@ module.exports = {
   user: config.db.user,
   password: config.db.password,
 
-  entities: [
-    path.join(__dirname, "../entities/**/*.js"),
-  ],
+  entities: [User, Organization, Project, Task],
 
   namingStrategy: UnderscoreNamingStrategy,
 
@@ -27,10 +30,7 @@ module.exports = {
   },
 
   migrations: {
-    path: path.join(
-      __dirname,
-      "../database/migrations"
-    ),
+    path: path.join(__dirname, "./database/migrations"),
     transactional: true,
     allOrNothing: true,
     snapshot: false,
@@ -40,10 +40,7 @@ module.exports = {
     connection: {
       application_name: config.app.name,
 
-      ssl:
-        config.db.ssl === true
-          ? { rejectUnauthorized: false }
-          : false,
+      ssl: config.db.ssl === true ? { rejectUnauthorized: false } : false,
     },
   },
 };

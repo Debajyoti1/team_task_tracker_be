@@ -1,10 +1,8 @@
 const { defineEntity, p } = require("@mikro-orm/core");
-const BaseEntity = require("./BaseEntity");
+const BaseEntityProps = require("./BaseEntity");
 
 const Project = defineEntity({
   name: "Project",
-
-  extends: BaseEntity,
 
   tableName: "projects",
 
@@ -15,17 +13,18 @@ const Project = defineEntity({
   ],
 
   properties: {
+    ...BaseEntityProps,
     name: p.string(),
 
     description: p.text({
       nullable: true,
     }),
 
-    organization: () => p.manyToOne("Organization"),
+    organization: () => p.manyToOne("Organization").inversedBy("projects"),
 
-    createdBy: () => p.manyToOne("User"),
+    createdBy: () => p.manyToOne("User").inversedBy("projects"),
 
-    tasks: () => p.oneToMany("Task", "project"),
+    tasks: () => p.oneToMany("Task").mappedBy("project"),
   },
 });
 
