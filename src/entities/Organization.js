@@ -8,13 +8,20 @@ const Organization = defineEntity({
 
   properties: {
     ...BaseEntityProps,
-    name: p.string({
-      length: 255,
-    }),
 
-    users: () => p.oneToMany("User").mappedBy("organization"),
+    name: p.string({ length: 255 }),
 
-    projects: () => p.oneToMany("Project").mappedBy("organization"),
+    createdBy: () =>
+      p.manyToOne("User", {
+        fieldName: "created_by",
+        nullable: false,
+      }),
+
+    organizationUsers: () =>
+      p.oneToMany("OrganizationUser").mappedBy("organization"),
+
+    projects: () =>
+      p.oneToMany("Project").mappedBy("organization"),
   },
 });
 

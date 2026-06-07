@@ -1,3 +1,7 @@
+const USER_STATUS = {
+  ACTIVE: "ACTIVE",
+  INACTIVE: "INACTIVE",
+}
 const USER_ROLES = {
   ADMIN: "ADMIN",
   MANAGER: "MANAGER",
@@ -43,6 +47,7 @@ const TASK_STATUS_TRANSITIONS = {
 
 
 module.exports = {
+  USER_STATUS,
   USER_ROLES,
   TASK_PRIORITY,
   TASK_STATUS,

@@ -6,25 +6,35 @@ const Project = defineEntity({
 
   tableName: "projects",
 
-  indexes: [
-    {
-      properties: ["organization"],
-    },
-  ],
-
   properties: {
     ...BaseEntityProps,
-    name: p.string(),
 
-    description: p.text({
-      nullable: true,
+    name: p.string({ length: 255 }),
+
+    description: p.text({ nullable: true }),
+
+    status: p.enum({
+      items: ["active", "archived", "completed"],
+      default: "active",
     }),
 
-    organization: () => p.manyToOne("Organization").inversedBy("projects"),
+    organization: () =>
+      p.manyToOne("Organization", {
+        fieldName: "organization_id",
+        nullable: false,
+      }),
 
-    createdBy: () => p.manyToOne("User").inversedBy("projects"),
+    createdBy: () =>
+      p.manyToOne("User", {
+        fieldName: "created_by",
+        nullable: false,
+      }),
 
-    tasks: () => p.oneToMany("Task").mappedBy("project"),
+    projectUsers: () =>
+      p.oneToMany("ProjectUser").mappedBy("project"),
+
+    tasks: () =>
+      p.oneToMany("Task").mappedBy("project"),
   },
 });
 

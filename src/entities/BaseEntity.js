@@ -1,29 +1,15 @@
-const { defineEntity, p } = require("@mikro-orm/core");
-
-const BaseEntity = defineEntity({
-  abstract: true,
-
-  properties: {
-    id: p.uuid().primary(),
-
-    createdAt: p.datetime({
-      defaultRaw: "now()",
-    }),
-
-    updatedAt: p.datetime({
-      defaultRaw: "now()",
-      onUpdate: () => new Date(),
-    }),
-  },
-});
+const { p } = require("@mikro-orm/core");
 
 const BaseEntityProps = {
   id: p.uuid().primary(),
-  createdAt: p.datetime({ defaultRaw: "now()" }),
-  updatedAt: p.datetime({
-    defaultRaw: "now()",
-    onUpdate: () => new Date(),
-  }),
+  
+  // Use .onCreate() to specify the database default raw expression
+  createdAt: p.datetime().onCreate(() => 'now()'),
+
+  // Chain .onCreate() and .onUpdate() modifiers
+  updatedAt: p.datetime()
+    .onCreate(() => 'now()')
+    .onUpdate(() => 'now()'),
 };
 
 module.exports = BaseEntityProps;

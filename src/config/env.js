@@ -4,20 +4,20 @@ const { z } = require("zod");
 
 const envSchema = z.object({
   // App
-  PORT: z.coerce.number().default(5000),
+  APP_PORT: z.coerce.number().default(5000),
   NODE_ENV: z.enum(["dev", "test", "stage", "prod"]).default("dev"),
   APP_NAME: z.string().default("app"),
   LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).default("info"),
 
   // Database
-  DB_HOST: z.string().default("127.0.0.1"),
-  DB_PORT: z.coerce.number().default(5432),
-  DB_NAME: z.string().default("postgres"),
-  DB_USER: z.string().default("postgres"),
-  DB_PASSWORD: z.string().default("postgres"),
-  DB_MAX_POOL: z.coerce.number().default(10),
-  DB_MIN_POOL: z.coerce.number().default(2),
-  DB_SSL: z.stringbool().default(false),
+  PSQL_HOST: z.string().default("127.0.0.1"),
+  PSQL_PORT: z.coerce.number().default(5432),
+  PSQL_DATABASE: z.string().default("postgres"),
+  PSQL_USER: z.string().default("postgres"),
+  PSQL_PASSWORD: z.string().default("postgres"),
+  PSQL_MAX_POOL: z.coerce.number().default(10),
+  PSQL_MIN_POOL: z.coerce.number().default(2),
+  PSQL_SSL: z.stringbool().default(false),
 
   // Redis
   REDIS_HOST: z.string().default("127.0.0.1"),
@@ -36,21 +36,21 @@ const env = envSchema.parse(process.env);
 
 const config = {
   app: {
-    port: env.PORT,
+    port: env.APP_PORT,
     env: env.NODE_ENV,
     name: env.APP_NAME,
-    logLevel: env.logLevel
+    logLevel: env.LOG_LEVEL
   },
 
   db: {
-    host: env.DB_HOST,
-    port: env.DB_PORT,
-    database: env.DB_NAME,
-    user: env.DB_USER,
-    password: env.DB_PASSWORD,
-    maxPool: env.DB_MAX_POOL,
-    minPool: env.DB_MIN_POOL,
-    ssl: env.DB_SSL,
+    host: env.PSQL_HOST,
+    port: env.PSQL_PORT,
+    database: env.PSQL_DATABASE,
+    user: env.PSQL_USER,
+    password: env.PSQL_PASSWORD,
+    maxPool: env.PSQL_MAX_POOL,
+    minPool: env.PSQL_MIN_POOL,
+    ssl: env.PSQL_SSL,
   },
 
   redis: {

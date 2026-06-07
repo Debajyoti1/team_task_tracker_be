@@ -1,5 +1,4 @@
 const { defineEntity, p } = require("@mikro-orm/core");
-const { USER_ROLES } = require("../utils/constants");
 const BaseEntityProps = require("./BaseEntity");
 
 const User = defineEntity({
@@ -7,36 +6,46 @@ const User = defineEntity({
 
   tableName: "users",
 
-  indexes: [
-    {
-      properties: ["organization"],
-    },
-  ],
-
   properties: {
     ...BaseEntityProps,
-    email: p.string({
-      unique: true,
+
+    email: p.string({ length: 255, unique: true }),
+
+    name: p.string({ length: 255, nullable: true }),
+
+    passwordHash: p.text({ nullable: true, fieldName: "password_hash" }),
+
+    status: p.enum({
+      items: ["active", "inactive", "suspended"],
+      default: "active",
     }),
 
-    passwordHash: p.text(),
+    organizationUsers: () =>
+      p.oneToMany("OrganizationUser").mappedBy("user"),
 
-    firstName: p.string(),
+    projectUsers: () =>
+      p.oneToMany("ProjectUser").mappedBy("user"),
 
-    lastName: p.string(),
+    createdOrganizations: () =>
+      p.oneToMany("Organization").mappedBy("createdBy"),
 
-    role: p.enum({
-      items: Object.values(USER_ROLES),
-    }),
+    createdProjects: () =>
+      p.oneToMany("Project").mappedBy("createdBy"),
 
-    isActive: p.boolean({
-      default: true,
-    }),
+    // Tasks this user created
+    createdTasks: () =>
+      p.oneToMany("Task").mappedBy("createdBy"),
 
-    organization: () => p.manyToOne("Organization").inversedBy("users"),
-    projects: () => p.oneToMany("Project").mappedBy("createdBy"),
-    assignedTasks: () => p.oneToMany("Task").mappedBy("assignee"),
-    createdTasks: () => p.oneToMany("Task").mappedBy("createdBy"),
+    // Tasks currently assigned to this user
+    assignedTasks: () =>
+      p.oneToMany("Task").mappedBy("assignedTo"),
+
+    // Invitations this user sent to others
+    sentInvitations: () =>
+      p.oneToMany("Invitation").mappedBy("invitedBy"),
+
+    activityLogs: () =>
+      p.oneToMany("ActivityLog").mappedBy("user"),
   },
 });
 

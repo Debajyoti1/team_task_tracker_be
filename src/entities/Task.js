@@ -1,7 +1,4 @@
 const { defineEntity, p } = require("@mikro-orm/core");
-
-const { TASK_STATUS, TASK_PRIORITY } = require("../utils/constants");
-
 const BaseEntityProps = require("./BaseEntity");
 
 const Task = defineEntity({
@@ -9,48 +6,61 @@ const Task = defineEntity({
 
   tableName: "tasks",
 
-  indexes: [
-    {
-      properties: ["status"],
-    },
-    {
-      properties: ["dueDate"],
-    },
-    {
-      properties: ["assignee", "status"],
-    },
-  ],
-
   properties: {
     ...BaseEntityProps,
-    title: p.string(),
 
-    description: p.text({
-      nullable: true,
+    title: p.string({ length: 500 }),
+
+    description: p.text({ nullable: true }),
+
+    status: p.enum({
+      items: ["todo", "in_progress", "in_review", "done", "cancelled"],
+      default: "todo",
     }),
 
     priority: p.enum({
-      items: Object.values(TASK_PRIORITY),
-    }),
-
-    status: p.enum({
-      items: Object.values(TASK_STATUS),
-
-      default: TASK_STATUS.TODO,
-    }),
-
-    dueDate: p.datetime({
+      items: ["low", "medium", "high", "urgent"],
       nullable: true,
     }),
 
-    project: () => p.manyToOne("Project").inversedBy("tasks"),
+    dueDate: p.datetime().nullable(true).fieldName("due_date"),
 
-    assignee: () => p.manyToOne("User").inversedBy("assignedTasks"),
+    completedAt: p.datetime().nullable(true).fieldName("completed_at"),
 
-    createdBy: () => p.manyToOne("User").inversedBy("createdTasks"),
+    project: () =>
+      p.manyToOne("Project", {
+        fieldName: "project_id",
+        nullable: false,
+      }),
+
+    createdBy: () =>
+      p.manyToOne("User", {
+        fieldName: "created_by",
+        nullable: false,
+      }),
+
+    assignedTo: () =>
+      p.manyToOne("User", {
+        fieldName: "assigned_to",
+        nullable: true,
+      }),
+
+    // Self-referential for subtasks
+    parentTask: () =>
+      p.manyToOne("Task", {
+        fieldName: "parent_task_id",
+        nullable: true,
+      }),
+
+    subtasks: () =>
+      p.oneToMany("Task").mappedBy("parentTask"),
+
+    comments: () =>
+      p.oneToMany("TaskComment").mappedBy("task"),
+
+    attachments: () =>
+      p.oneToMany("TaskAttachment").mappedBy("task"),
   },
 });
-
-
 
 module.exports = Task;
