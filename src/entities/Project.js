@@ -18,9 +18,9 @@ const Project = defineEntity({
       default: "active",
     }),
 
-    organization: () =>
-      p.manyToOne("Organization", {
-        fieldName: "organization_id",
+    workspace: () =>
+      p.manyToOne("Workspace", {
+        fieldName: "workspace_id",
         nullable: false,
       }),
 

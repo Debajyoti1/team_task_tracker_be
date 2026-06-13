@@ -5,10 +5,10 @@ const config = require("./config/env");
 
 const User = require("./entities/User");
 
-const Organization = require("./entities/Organization");
-const OrganizationUser = require("./entities/OrganizationUser");
-const OrganizationUserRole = require("./entities/OrganizationUserRole");
-const OrganizationUserPermissionOverride = require("./entities/OrganizationUserPermissionOverride");
+const Workspace = require("./entities/Workspace");
+const WorkspaceUser = require("./entities/WorkspaceUser");
+const WorkspaceUserRole = require("./entities/WorkspaceUserRole");
+const WorkspaceUserPermissionOverride = require("./entities/WorkspaceUserPermissionOverride");
 
 const Project = require("./entities/Project");
 const ProjectUser = require("./entities/ProjectUser");
@@ -36,10 +36,10 @@ module.exports = {
 
   entities: [
     User,
-    Organization,
-    OrganizationUser,
-    OrganizationUserRole,
-    OrganizationUserPermissionOverride,
+    Workspace,
+    WorkspaceUser,
+    WorkspaceUserRole,
+    WorkspaceUserPermissionOverride,
     Project,
     ProjectUser,
     ProjectUserRole,

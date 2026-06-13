@@ -9,7 +9,7 @@ const Role = defineEntity({
   properties: {
     ...BaseEntityProps,
 
-    // e.g. "org_owner", "org_admin", "project_manager", "project_member", "viewer"
+    // e.g. "workspace_admin", "workspace_member", "project_manager", "project_member", "viewer"
     code: p.string({ length: 100, unique: true }),
 
     name: p.string({ length: 255 }),
@@ -18,15 +18,15 @@ const Role = defineEntity({
 
     // Scope clarifies which resource type this role applies to
     scope: p.enum({
-      items: ["organization", "project"],
+      items: ["workspace", "project"],
       nullable: true,
     }),
 
     rolePermissions: () =>
       p.oneToMany("RolePermission").mappedBy("role"),
 
-    organizationUserRoles: () =>
-      p.oneToMany("OrganizationUserRole").mappedBy("role"),
+    workspaceUserRoles: () =>
+      p.oneToMany("WorkspaceUserRole").mappedBy("role"),
 
     projectUserRoles: () =>
       p.oneToMany("ProjectUserRole").mappedBy("role"),

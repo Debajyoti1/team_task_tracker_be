@@ -1,19 +1,19 @@
 const { defineEntity, p } = require("@mikro-orm/core");
 const BaseEntityProps = require("./BaseEntity");
 
-const OrganizationUserPermissionOverride = defineEntity({
-  name: "OrganizationUserPermissionOverride",
+const WorkspaceUserPermissionOverride = defineEntity({
+  name: "WorkspaceUserPermissionOverride",
 
-  tableName: "organization_user_permission_overrides",
+  tableName: "workspace_user_permission_overrides",
 
-  indexes: [{ properties: ["organizationUser", "permission"], unique: true }],
+  indexes: [{ properties: ["workspaceUser", "permission"], unique: true }],
 
   properties: {
     ...BaseEntityProps,
 
-    organizationUser: () =>
-      p.manyToOne("OrganizationUser", {
-        fieldName: "organization_user_id",
+    workspaceUser: () =>
+      p.manyToOne("WorkspaceUser", {
+        fieldName: "workspace_user_id",
         nullable: false,
       }),
 
@@ -32,4 +32,4 @@ const OrganizationUserPermissionOverride = defineEntity({
   },
 });
 
-module.exports = OrganizationUserPermissionOverride;
+module.exports = WorkspaceUserPermissionOverride;

@@ -1,10 +1,10 @@
 const { defineEntity, p } = require("@mikro-orm/core");
 const BaseEntityProps = require("./BaseEntity");
 
-const Organization = defineEntity({
-  name: "Organization",
+const Workspace = defineEntity({
+  name: "Workspace",
 
-  tableName: "organizations",
+  tableName: "workspaces",
 
   properties: {
     ...BaseEntityProps,
@@ -17,12 +17,12 @@ const Organization = defineEntity({
         nullable: false,
       }),
 
-    organizationUsers: () =>
-      p.oneToMany("OrganizationUser").mappedBy("organization"),
+    workspaceUsers: () =>
+      p.oneToMany("WorkspaceUser").mappedBy("workspace"),
 
     projects: () =>
-      p.oneToMany("Project").mappedBy("organization"),
+      p.oneToMany("Project").mappedBy("workspace"),
   },
 });
 
-module.exports = Organization;
+module.exports = Workspace;

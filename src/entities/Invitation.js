@@ -9,9 +9,9 @@ const Invitation = defineEntity({
   properties: {
     ...BaseEntityProps,
 
-    // "organization" or "project"
+    // "workspace" or "project"
     resourceType: p.enum({
-      items: ["organization", "project"],
+      items: ["workspace", "project"],
       nullable: false,
       fieldName: "resource_type",
     }),

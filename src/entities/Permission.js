@@ -9,7 +9,7 @@ const Permission = defineEntity({
   properties: {
     ...BaseEntityProps,
 
-    // e.g. "project.delete", "task.assign", "organization.invite_members"
+    // e.g. "project.delete", "task.assign", "workspace.invite_members"
     code: p.string({ length: 100, unique: true }),
 
     description: p.text({ nullable: true }),
@@ -17,8 +17,11 @@ const Permission = defineEntity({
     rolePermissions: () =>
       p.oneToMany("RolePermission").mappedBy("permission"),
 
-    userPermissionOverrides: () =>
-      p.oneToMany("OrganizationUserPermissionOverride").mappedBy("permission"),
+    workspacUserPermissionOverrides: () =>
+      p.oneToMany("WorkspaceUserPermissionOverride").mappedBy("permission"),
+
+    projectUserPermissionOverrides: () =>
+      p.oneToMany("ProjectUserPermissionOverride").mappedBy("permission"),
   },
 });
 

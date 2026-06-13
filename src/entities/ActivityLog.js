@@ -12,7 +12,7 @@ const ActivityLog = defineEntity({
     // e.g. "task.created", "task.assigned", "project.created", "member.invited"
     action: p.string({ length: 255, nullable: false }),
 
-    // "organization", "project", "task", etc.
+    // "workspace", "project", "task", etc.
     resourceType: p.string({ length: 50, nullable: true, fieldName: "resource_type" }),
 
     // UUID of the affected resource

@@ -20,14 +20,14 @@ const User = defineEntity({
       default: "active",
     }),
 
-    organizationUsers: () =>
-      p.oneToMany("OrganizationUser").mappedBy("user"),
+    workspaceUsers: () =>
+      p.oneToMany("WorkspaceUser").mappedBy("user"),
 
     projectUsers: () =>
       p.oneToMany("ProjectUser").mappedBy("user"),
 
-    createdOrganizations: () =>
-      p.oneToMany("Organization").mappedBy("createdBy"),
+    createdWorkspaces: () =>
+      p.oneToMany("Workspace").mappedBy("createdBy"),
 
     createdProjects: () =>
       p.oneToMany("Project").mappedBy("createdBy"),
